@@ -1,0 +1,23 @@
+composer create-project --prefer-dist laravel/laravel laravel-qa "5.8.*"
+cd laravel_qa
+git init
+git add .
+git commit -m "Initial commit"
+Create a repository in github
+git remote add origin https://github.com/Md-Ibrahim-Khalil/laravel-qa.git
+git branch -M main
+git push -u origin main
+npm install
+php artisan make:auth
+
+Create database in localhost-> laravel_qa
+
+open code file => code .
+
+In config->database.php
+    'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+php artisan migrate
+
+
+
