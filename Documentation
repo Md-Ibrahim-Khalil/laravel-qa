@@ -80,5 +80,14 @@ In terminal:
 
 Git:
         git status (to check the update files)
+        git add .
+        git commit -m "Generate Question model via artisan model generator"
+        git push origin lesson-2
+        git checkout main
+        git merge lesson-2
+        git push origin main
+
+
+
 
 
