@@ -1,3 +1,5 @@
+01.01.2020
+
 composer create-project --prefer-dist laravel/laravel laravel-qa "5.8.*"
 cd laravel_qa
 git init
@@ -19,5 +21,64 @@ In config->database.php
             'collation' => 'utf8_unicode_ci',
 php artisan migrate
 
+Git setting:
+git add .
+git commit -m "generate auth scaffolding & install npm packages"
+git branch -M main
+git push -u origin main
+
+--------
+git branch
+create new branch->
+    git checkout -b lesson-2
+
+
+php artisan make:model Question -m
+In questions Table->
+
+             $table->increments('id');
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('body');
+            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('answers')->default(0);
+            $table->integer('votes')->default(0);
+            $table->unsignedInteger('best_answer_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            migrations:
+            php artisan migrate:fresh
+            php artisan migrate:reset
+
+
+In Question.php
+        protected $fillable = ['title', 'body'];
+
+        public function user() {
+            return $this->belongTo(User::class);
+        }
+User.php
+         public function questions()
+         {
+            return $this->hasMany(Question::class);
+         }
+
+        public function setTitleAttribute($value)
+        {
+            $this->attributes['title'] = $value;
+            $this->attributes['slug'] = str_slug($value);
+        }
+In terminal:
+            php artisan tinker
+            $str = "my first question"
+            str_slug($str)
+            and exit to close
+
+Git:
+        git status (to check the update files)
 
 
