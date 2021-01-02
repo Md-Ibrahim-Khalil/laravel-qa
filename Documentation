@@ -87,7 +87,65 @@ Git:
         git merge lesson-2
         git push origin main
 
+4=>  Generating fake data via model factories
+    Generating new branch ->
+                            git checkout -b lesson-3
+
+php artisan make:factory QuestionFactory
+
+In Database,factories,QuestionFactory =>
+        return [
+        'title' => rtrim($faker->sentence(rand(5, 10)), ".")
+        ];
+In terminal ->
+            php artisan tinker
+
+            use Faker\Factory;
+
+            $faker = Factory::create();
+            $faker->sentence()
+            rtrim($faker->sentence(), ".")
+
+Again Database,factories,QuestionFactory =>
+
+                    'title' => rtrim($faker->sentence(rand(5, 10)), "."),
+                    'body' => $faker->paragraphs(rand(3, 7), true),
+                    'views' => rand(0, 10),
+                    'answers' => rand(0, 10),
+                    'votes' => rand(-3, 10)
+
+Again In terminal ->
+            php artisan tinker
+            factory(App\User::class, 3)->create()
 
 
+ 5=>  Generating fake data via model factories
 
+    In seeds,DatabaseSeeder.php  =>
+
+            factory(App\User::class, 3)->create()->each(function($u) {
+            $u->question()
+              ->saveMany(
+                    factory(App\Question::class, rand(1, 5))->make()
+              );
+
+            });
+            // factory(App\Question::class, 10)->create();
+
+
+In terminal ->
+
+php artisan make:factory QuestionFactory --model=Question
+
+In factories,QuestionFactory.php->
+
+        'title' => rtrim($faker->sentence(rand(5, 10)), "."),
+        'slug' => $faker->slug,
+        'body' => $faker->paragraphs(rand(3, 7), true),
+        'views' => rand(1, 100),
+        'answers' => rand(1, 4),
+        'votes' => rand(1, 10),
+        'best_answer_id' => rand(1, 100),
+        'user_id' => rand(1, 100),
+php artisan db:seed
 
