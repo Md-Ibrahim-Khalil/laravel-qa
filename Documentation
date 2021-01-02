@@ -149,3 +149,40 @@ In factories,QuestionFactory.php->
         'user_id' => rand(1, 100),
 php artisan db:seed
 
+DAY 6(Displaying all questions)->
+
+php artisan make:controller QuestionsController --resource --model=Question
+In web,Route.php->
+
+    Route::resource('questions', 'QuestionsController');
+
+QuestionsController.php=>
+
+    public function index()
+        {
+            $questions = Question::latest()->paginate(5);
+            return view('questions.index', compact('questions'));
+        }
+and create questions,index.blade.php=>
+
+                <div class="card-header">All Questions</div>
+
+                <div class="card-body">
+                    @foreach($questions as $question)
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="mt-0">{{ $question->title }}</h3>
+                            {{ str_limit($question->body, 250) }}
+                        </div>
+                    </div>
+                    <hr>
+                    @endforeach
+
+                    <div class="text-center">
+                        {{ $questions->links() }}
+                    </div>
+
+php artisan vendor:publish --tag=laravel-pagination
+vendor,pagination,bootstrap-4.blade.php =>
+    <ul class="pagination" role="navigation"> to
+    <ul class="pagination justify-content-center" role="navigation">
